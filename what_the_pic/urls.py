@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.shortcuts import render
+from django.urls import include
 
 urlpatterns = [
+    url(r'^api/v1/', include('cameras.urls')),
     url(r'admin/', admin.site.urls),
-    url(r'^.*$', lambda request: render(request, template_name='index.html')),
+    #url(r'^.*$', lambda request: render(request, template_name='index.html')),
 ]
