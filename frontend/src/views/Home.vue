@@ -7,9 +7,7 @@
 
     <p class="text-center text-gray-500 mb-12">Klick a camaera to see more information</p>
 
-    <card :id="1" :status="0" ></card>
-    <card :id="2" :status="3" ></card>
-    <card :id="30" :status="4" ></card>
+    <card v-for="camera in cameras" :id="camera.id" :status="0" :key="camera.id"></card>
 
 
   </div>
@@ -17,16 +15,29 @@
 
 <script>
 import Card from '../components/Listcard.vue'
+import Service from "../cameras.js";
 export default {
   components:{
     Card
   },
   name: "List",
   created() {},
+  mounted() {
+    this.getCameras();
+  },
   data() {
-    return {};
+    return {
+      cameras: []
+    };
   },
   props: {},
-  methods: {},
+  methods: {
+    getCameras() {
+
+      Service.getAllCameras()
+        .then(cameras => this.cameras = cameras)
+
+    },
+  },
 };
 </script>

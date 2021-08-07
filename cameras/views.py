@@ -1,3 +1,5 @@
+import base64
+
 import requests
 from rest_framework import status
 from rest_framework.response import Response
@@ -30,11 +32,25 @@ class CameraDetail(APIView):
     def get_camera(self, id):
         try:
             camera = Camera.objects.get(id=id)
+            pictures = Picture.objects.filter(camera_id=id)
+
+            import base64
+            pics = []
+
+            for pic in pictures:
+                base64.b64encode(pic.tobytes())
+                pics.append({
+                    "filename":pic.filename,
+                    "picture":pic.image,
+                })
+
             ret = {
                 "id": camera.id,
                 "ip4": camera.ip4,
                 "interval": camera.interval,
-                "last_active": camera.last_active
+                "quality": camera.quality,
+                "last_active": camera.last_active,
+                "pictures": pics
             }
             return ret
         except Camera.DoesNotExist:
@@ -97,16 +113,3 @@ class PictureView(APIView):
             return Response()
         else:
             return Response(dict(error="no image uploaded"), status_code=status.HTTP_400_BAD_REQUEST)
-"""
-
-
-
-        #print(str(request.data['imageFile']))
-        file = request.data['imageFile'].file
-        #filename = request.data['imageFile'].filename
-
-        Picture.objects.create(camera_id=camera.id,
-                               picture=file,
-                               filename="")
-        return Response()
-"""

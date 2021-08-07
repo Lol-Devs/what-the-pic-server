@@ -5,7 +5,7 @@
     
       <div class="mx-10 my-2 p-3 hover:bg-gray-200 cursor-pointer border-2 grid grid-cols-2">
 
-<p class="ml-20">{{id}}</p>
+<p class="ml-20">Camera No. {{id}}</p>
 
 <div v-if="status==0" class="flex items-center md:mr-48 mr-10">
 <div class="h-3 w-3 rounded-full bg-green-600 mr-3" ></div>
