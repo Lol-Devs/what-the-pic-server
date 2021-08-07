@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  db:
+    container_name: "db_what_the_pic_dev"
+    image: postgres
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - $HOME/docker/volumes/postgres_what_the_pic:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  web:
+    container_name: "web_what_the_pic_dev"
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PORT: 5432
+    depends_on:
+      - db
